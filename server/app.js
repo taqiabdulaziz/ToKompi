@@ -7,13 +7,15 @@ var mongoose = require(`mongoose`)
 var cors = require(`cors`)
 var transactionRoute = require('./routes/transaction')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var transactionRoute = require('./routes/transaction')
 var itemRoute = require('./routes/item')
 
-mongoose.connect('mongodb://localhost/tokompi', { useNewUrlParser: true });
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var cartRouter = require(`./routes/cart`)
+
 var app = express();
+mongoose.connect('mongodb://localhost:27017/tokompi', { useNewUrlParser: true });
 var db = mongoose.connection;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +37,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/transaction', transactionRoute)
 app.use('/item', itemRoute)
+app.use(`/cart`, cartRouter)
+
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
