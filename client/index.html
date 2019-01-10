@@ -1,12 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="./asset/bootstrap.css">
+    <title>ToKompi</title>
 </head>
+
 <body>
-    
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">ToKompi</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                </form>
+                <ul class="navbar-nav mr-auto">
+
+                </ul>
+
+                <button type="button" class="btn btn-primary">
+                    Cart <span class="badge badge-light" id="cartCount">0</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <ul class="nav nav-tabs container">
+        <li class="nav-item dropdown show">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="true">Category</a>
+            <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" href="#">empty category</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile" onclick="productsPage()">Products</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile">Best Seller</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile">Promo</a>
+        </li>
+
+    </ul>
+    <br>
+
+    <!-- breacrumb -->
+    <div class="container" id="breadcrumb">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+            </ol>
+        </nav>
+
+    </div>
+
+    <!-- home-page -->
+    <div class="container" id="home-page">
+        <div>
+            <div class="jumbotron">
+                <h1 class="display-3">Hello, world!</h1>
+                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
+                    attention
+                    to
+                    featured content or information.</p>
+                <hr class="my-4">
+                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- product-page -->
+    <div class="container" id="product-page" style="display: none">
+        <div class="row">
+            <div class="col-12 col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i>
+                        Categories</div>
+                    <ul class="list-group category_block" id="categoryList-container">
+                        <li class="list-group-item"><a href="category.html">Cras justo odio</a></li>
+
+                    </ul>
+                </div>
+                <div class="card bg-light mb-3">
+                    <div class="card-header bg-success text-white text-uppercase">Last product</div>
+                    <div class="card-body">
+                        <img class="img-fluid" src="https://dummyimage.com/600x400/55595c/fff" />
+                        <h5 class="card-title">Product title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <p class="bloc_left_price">99.00 $</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row" id="productList-container">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">Product title</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="btn btn-danger btn-block">99.00 $</p>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#" class="btn btn-success btn-block">Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- cart -->
+    <div class="container" id="cartPage">
+
+    </div>
+
+    </div>
+
+    <!-- 
+FOOTER -->
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body" style="clear: both;
+        position: relative;
+        height: 40px;
+        margin-top: -40px;">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script>
+        var productList = []
+        var categoryList = []
+        var cartCount = undefined
+        var baseUrl = "http://localhost:3000"
+        displayCategory()
+        getCartData()
+
+        function getCartData() {
+            $.ajax({
+                type: "GET",
+                url: `${baseUrl}/cart/5c374daca904162170ce36fd`,
+
+                success: function (response) {
+                    $("#cartCount").html(`${response.items.length}`);
+
+                },
+                fail: function (response) {
+                    console.log(response);
+
+                }
+            });
+
+        }
+
+        function displayCategory() {
+            $.ajax({
+                type: "GET",
+                url: `${baseUrl}/item`,
+                success: function (val) {
+                    var categoryListTemp = []
+                    productList = val.items
+                    productList.forEach(element => {
+                        element.category != undefined && categoryListTemp.push(element.category)
+                    });
+
+                    $(".dropdown-menu").html("");
+                    categoryList = categoryListTemp.filter(function (item, pos) {
+                        console.log(item);
+
+                        $(".dropdown-menu").append(`
+                        <a class="dropdown-item" href="#" onclick="displayOneCategory("${item}")">${item}</a>
+                    `)
+                        return categoryListTemp.indexOf(item) == pos;
+                    })
+
+                },
+                error: function (val) {
+                    console.log(val);
+
+                }
+            })
+        }
+
+        function productsPage() {
+
+            $("#home-page").hide();
+            $("#product-page").show();
+
+            $("#productList-container").html("");
+            $("#categoryList-container").html("");
+            categoryList.forEach((value, pos) => {
+                $("#categoryList-container").append(`
+                <li class="list-group-item"><a href="#" onclick="displayOneCategory('${value}')">${value}</a></li>
+                `);
+            })
+
+            for (let i = 0; i < productList.length; i++) {
+
+                $("#productList-container").append(`
+                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="${productList[i].imageUrl ? productList[i].imageUrl : "http://www.ourlincolnpark.com/new/wp-content/themes/456ecology/assets//img/no-product-image.png"}" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">${productList[i].name}</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col" id="priceTagBtn${i}">
+                                        <p class="btn btn-danger btn-block">Rp. ${productList[i].price}</p>
+                                        </div>
+                                        <div class="col" id="addToCartBtn${i}">
+                                            <a href="#" class="btn btn-success btn-block" onclick="addToCart('${productList[i]._id}', ${i})">Add to cart</a>
+                                            </div>
+                                            <div class="col" style="display: none" id="successCartBtn${i}">
+                                                <a id="successCartInfo"href="#" class="btn btn-info btn-block" >Added to cart!</a>
+                                                </div>
+                                                
+                                                
+                                                <div class="col" style="display: none;" id="progress${i}">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                                        </div>
+                                                        </div>
+
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        `);
+
+                $(`#addToCartBtn${i}`).click(function (e) {
+                    e.preventDefault();
+
+                });
+            }
+
+        }
+
+        function showCart() {
+
+
+        }
+
+        function addToCart(itemId, elemIndex) {
+            $.ajax({
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+
+                    // Upload progress
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+
+                        }
+                    }, false);
+
+                    // Download progress
+                    xhr.addEventListener("progress", function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+
+                            $(`#priceTagBtn${elemIndex}`).hide();
+                            $(`#addToCartBtn${elemIndex}`).hide();
+                            $(`#progress${elemIndex}`).show()
+
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                type: "POST",
+                url: `${baseUrl}/cart/${itemId}`,
+                data: {
+                    userId: "5c374daca904162170ce36fd"
+                },
+                success: function (response) {
+                    console.log(response);
+                    $(`#successCartBtn${elemIndex}`).show();
+                    setTimeout(() => {
+                        $(`#successCartBtn${elemIndex}`).hide();
+                        $(`#priceTagBtn${elemIndex}`).show();
+                        $(`#addToCartBtn${elemIndex}`).show();
+                    }, 1000);
+                    $(`#progress${elemIndex}`).hide()
+                    getCartData()
+
+                }
+            });
+        }
+
+        function displayOneCategory(category) {
+            console.log(`kontoll`);
+
+            $("#productList-container").html("")
+
+            for (let i = 0; i < productList.length; i++) {
+                if (productList[i].category == category) {
+                    
+                    $("#productList-container").append(`
+                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="${productList[i].imageUrl ? productList[i].imageUrl : "http://www.ourlincolnpark.com/new/wp-content/themes/456ecology/assets//img/no-product-image.png"}" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">${productList[i].name}</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col" id="priceTagBtn${i}">
+                                        <p class="btn btn-danger btn-block">Rp. ${productList[i].price}</p>
+                                        </div>
+                                        <div class="col" id="addToCartBtn${i}">
+                                            <a href="#" class="btn btn-success btn-block" onclick="addToCart('${productList[i]._id}', ${i})">Add to cart</a>
+                                            </div>
+                                            <div class="col" style="display: none" id="successCartBtn${i}">
+                                                <a id="successCartInfo"href="#" class="btn btn-info btn-block" >Added to cart!</a>
+                                                </div>
+                                                
+                                
+                                <div class="col" style="display: none;" id="progress${i}">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                        </div>
+                                        </div>
+
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        `);
+
+                    $(`#addToCartBtn${i}`).click(function (e) {
+                        e.preventDefault();
+
+                    });
+                }
+            }
+
+            console.log(productList[0]);
+
+        }
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
