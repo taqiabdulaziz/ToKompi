@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require(`mongoose`)
-var cors = requier(`cors`)
-
+var cors = require(`cors`)
+var dotenv = require('dotenv')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -43,8 +43,9 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
+  console.log(err)
   res.status(err.status || 500);
-  res.render('error');
+  res.json('error');
 });
 
 module.exports = app;
