@@ -10,9 +10,9 @@ POST - /auth
 
 ```
 
-POST - /cart/:id_user
+POST - /cart/:id_item
 
-DELETE - /cart/:id_user/:id_item
+DELETE - /cart/:id_item
 
 GET - /cart/:id_user
 
