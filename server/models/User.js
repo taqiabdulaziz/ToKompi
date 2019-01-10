@@ -11,7 +11,6 @@ var userSchema = new Schema({
     }],
     role: String,
     kota: String,
-
 })
 
 var User = mongoose.model("User", userSchema)
