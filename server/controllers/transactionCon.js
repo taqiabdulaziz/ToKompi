@@ -36,7 +36,8 @@ class TransactionController {
             Transaction
               .create({
                 userId: ObjectId(req.body.id),
-                shippingCost: findShippingCost
+                shippingCost: findShippingCost,
+                items: req.body.items
               })
               .then(transaction => {
                 res
