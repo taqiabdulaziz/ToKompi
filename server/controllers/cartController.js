@@ -52,12 +52,15 @@ module.exports = {
             .populate(`items`)
             .then((result) => {
                 if (result) {
+                    console.log(result);
+                    
                     res.status(200).json(result)
                 } else {
-                    res.status(404).json({msg: `user tidak ada`})
+                    res.status(404).json({ msg: `user tidak ada` })
                 }
             }).catch((err) => {
-                res.status(500).json({msg: `internal server error`, error: err})
+                
+                res.status(500).json({ msg: `internal server error`, error: err })
             });
     }
 };

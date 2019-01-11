@@ -6,5 +6,6 @@ var cartController = require(`../controllers/cartController`)
 router.post(`/:itemId`, cartController.addCart)
 router.delete(`/:itemId`, cartController.removeCart)
 router.get(`/:userId`, cartController.getCart)
+router.delete(`/`, cartController.removeCart)
 
 module.exports = router;
