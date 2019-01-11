@@ -5,8 +5,11 @@ const transactionSchema = new Schema({
   userId: {
     type:Schema.Types.ObjectId,
     ref: "User"
-  }
+  },
+  shippingCost: {type: Number, default:0},
 })
+
+
 
 var Transaction = mongoose.model('Transaction', transactionSchema)
 
