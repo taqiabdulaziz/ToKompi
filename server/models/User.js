@@ -3,15 +3,39 @@ const Schema = mongoose.Schema
 const hash = require('../helpers/hashPw')
 
 var userSchema = new Schema({
-    name: String,
-    email: String,
-    password: String,
-    role: String,
-    kota: String,
+    name: {
+        type: String,
+        required: [true, 'Name cannot be Empty']
+    },
+    email: {
+        type: String,
+        required: [true, 'Email cannot be Empty'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+        validate: {
+            validator: function(email) {
+                return User.findOne({email : email, _id: {$ne: this._id}})
+                    .then(user => {
+                        if(user) throw 'Email has been used'
+                    })
+                    .catch(err => {
+                        throw err
+                    })
+            }
+        },
+    },
+    password: { 
+        type: String,
+        minlength: [8, 'minimum length is 8']
+    },
     items: [{
         type: Schema.Types.ObjectId,
         ref: "Item"
     }],
+    role: { 
+        type: String,
+        default: 'customer'
+    },
+    kota: String,
 })
 
 userSchema.pre('save', function(next) {
