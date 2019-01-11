@@ -52,7 +52,6 @@ module.exports = {
             .populate(`items`)
             .then((result) => {
                 if (result) {
-                    console.log(result);
                     
                     res.status(200).json(result)
                 } else {
