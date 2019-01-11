@@ -58,31 +58,52 @@ module.exports = {
             })
     },
     loginUser: function(req, res) {
-        User.findOne({email: req.body.email})
-            .then(user => {
-                if (user) {
-                    if (compare.comparePw(req.body.password, user.password)) {
-                        res.status(200).json({
-                            token: jwt.sign({
-                                id: user.id,
-                                role: user.role,
-                                email: user.email,
-                            }, process.env.JWT_SECRET)
-                        })
-                    } else {
-                        res.status(400).json({
-                            msg: 'Wrong username / password!'
-                        })
-                    }
-                } else {
-                    res.status(400).json({
-                        msg: 'Wrong username / password!'
-                    })
-                }
-            }) 
-            .catch(err => {
-                res.status(500).json(err)
+        const secretKey = process.env.RECAPTCHA_SECRET
+        const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${req.body.captcha}&remoteip=${req.connection.remoteAddress}`
+        if(!req.body.captcha) {
+            res.status(400).json({
+                msg: "Please select Captcha"
             })
+        } else {
+            axios({
+                method: 'POST',
+                url: verifyUrl
+            })
+                .then(response => {
+                    if(response.data.success === true) {
+                        User.findOne({email: req.body.email})
+                            .then(user => {
+                                if (user) {
+                                    if (compare.comparePw(req.body.password, user.password)) {
+                                        res.status(200).json({
+                                            token: jwt.sign({
+                                                id: user.id,
+                                                role: user.role,
+                                                email: user.email,
+                                            }, process.env.JWT_SECRET)
+                                        })
+                                    } else {
+                                        res.status(400).json({
+                                            msg: 'Wrong username / password!'
+                                        })
+                                    }
+                                } else {
+                                    res.status(400).json({
+                                        msg: 'Wrong username / password!'
+                                    })
+                                }
+                            }) 
+                            .catch(err => {
+                                res.status(500).json(err)
+                            })
+                    } else {
+                        res.status(500).json(err)
+                    }
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        }
     },
     googleOauth: function(req, res) {
         const clientId = '460853791285-cv4u1att6v58hakiqldgnmh6ic8acd0q.apps.googleusercontent.com'
