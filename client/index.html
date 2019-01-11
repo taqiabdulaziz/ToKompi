@@ -27,7 +27,7 @@
 
                 </ul>
 
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id="cartBtn" onclick="displayCheckoutPage()">
                     Cart <span class="badge badge-light" id="cartCount">0</span>
                     <span class="sr-only">unread messages</span>
                 </button>
@@ -75,13 +75,10 @@
     <div class="container" id="home-page">
         <div>
             <div class="jumbotron">
-                <h1 class="display-3">Hello, world!</h1>
-                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
-                    attention
-                    to
-                    featured content or information.</p>
+                <h1 class="display-3">Welcome to ToKompi</h1>
+                <p class="lead">Toko online elektronik, gadget, komputer terpercaya</p>
                 <hr class="my-4">
-                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                 </p>
@@ -141,9 +138,50 @@
     </div>
 
     <!-- cart -->
-    <div class="container" id="cartPage">
+    <div class="container" id="checkout-page" style="display: none">
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                </h4>
+                <ul class="list-group mb-3" id="checkout-cart-container">
+                    <!-- LIST CART -->
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Product name</h6>
+                            <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$12</span>
+                    </li>
 
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">Promo code</h6>
+                            <small>EXAMPLECODE</small>
+                        </div>
+                        <span class="text-success">-$5</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (USD)</span>
+                        <strong>$20</strong>
+                    </li>
+                </ul>
+
+                <form class="card p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Promo code">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8 order-md-1" id="billing-address-container">
+               
+            </div>
+        </div>
     </div>
+
 
     </div>
 
@@ -176,6 +214,8 @@ FOOTER -->
     <script>
         var productList = []
         var categoryList = []
+        var userData = undefined
+        var totalCheckoutPrice = 0
         var cartCount = undefined
         var baseUrl = "http://localhost:3000"
         displayCategory()
@@ -184,11 +224,11 @@ FOOTER -->
         function getCartData() {
             $.ajax({
                 type: "GET",
-                url: `${baseUrl}/cart/5c374daca904162170ce36fd`,
+                url: `${baseUrl}/cart/5c37fa09aeaccc8a6cf2faaa`,
 
                 success: function (response) {
                     $("#cartCount").html(`${response.items.length}`);
-
+                    userData = response
                 },
                 fail: function (response) {
                     console.log(response);
@@ -230,6 +270,7 @@ FOOTER -->
         function productsPage() {
 
             $("#home-page").hide();
+            $("#checkout-page").hide();
             $("#product-page").show();
 
             $("#productList-container").html("");
@@ -317,7 +358,7 @@ FOOTER -->
                 type: "POST",
                 url: `${baseUrl}/cart/${itemId}`,
                 data: {
-                    userId: "5c374daca904162170ce36fd"
+                    userId: "5c37fa09aeaccc8a6cf2faaa"
                 },
                 success: function (response) {
                     console.log(response);
@@ -335,13 +376,11 @@ FOOTER -->
         }
 
         function displayOneCategory(category) {
-            console.log(`kontoll`);
-
             $("#productList-container").html("")
 
             for (let i = 0; i < productList.length; i++) {
                 if (productList[i].category == category) {
-                    
+
                     $("#productList-container").append(`
                     
                     <div class="col-12 col-md-6 col-lg-4">
@@ -382,6 +421,149 @@ FOOTER -->
             }
 
             console.log(productList[0]);
+
+        }
+
+        function displayCheckoutPage() {
+            $("#home-page").hide();
+            $("#product-page").hide();
+            $("#checkout-page").show();
+            $("#checkout-cart-container").html("");
+            userData.items.forEach((data) => {
+                $("#checkout-cart-container").append(`
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">${data.name}</h6>
+                                <small class="text-muted">${data.category}</small>
+                            </div>
+                            <span class="text-muted">${data.price}</span>
+                        </li>
+                `);
+                totalCheckoutPrice += Number(data.price)
+            })
+
+            $("#checkout-cart-container").append(`
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Total Price</h6>
+                <small>in IDR</small>
+              </div>
+              <span class="text-success">${totalCheckoutPrice}</span>
+            </li>
+            `);
+            $("#billing-address-container").html("");
+            $("#billing-address-container").append(`
+            <h4 class="mb-3">Billing address</h4>
+                <form class="needs-validation" novalidate="">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">First name</label>
+                            <input value="${userData.name}"type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                        <input value="${userData.email}" type="email" class="form-control" id="email" placeholder="you@mail.com">
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input value="${userData.kota}"type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state">Kota</label>
+                            <select class="custom-select d-block w-100" id="kota" required="">
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Harap pilih kota
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    
+                    <hr class="mb-4">
+
+                    <h4 class="mb-3">Payment</h4>
+
+                    <div class="d-block my-3">
+                        <div class="custom-control custom-radio">
+                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked=""
+                                required="">
+                            <label class="custom-control-label" for="credit">Credit card</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
+                            <label class="custom-control-label" for="debit">Debit card</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
+                            <label class="custom-control-label" for="paypal">Paypal</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-name">Name on card</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                            <small class="text-muted">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-number">Credit card number</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Credit card number is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-expiration">Expiration</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-expiration">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                </form>
+                <br>
+                <br>
+            `);
+
+            console.log(userData);
 
         }
     </script>
