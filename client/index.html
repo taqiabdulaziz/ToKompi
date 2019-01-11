@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./asset/bootstrap.css">
+    <meta name="google-signin-client_id" content="460853791285-cv4u1att6v58hakiqldgnmh6ic8acd0q.apps.googleusercontent.com">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/client/index.html">ToKompi</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                </form>
+                <ul class="navbar-nav mr-auto">
+
+                </ul>
+
+                <button type="button" class="btn btn-primary" id="cartBtn" onclick="displayCheckoutPage()">
+                    Cart <span class="badge badge-light" id="cartCount">0</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+
+                <button id="singOut" onclick="signOut();" class="btn btn btn-primary">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <ul class="nav nav-tabs container" id="navbar2-container">
+        <li class="nav-item dropdown show">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="true">Category</a>
+            <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" href="#">empty category</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile" onclick="productsPage()">Products</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile">Best Seller</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#profile">Promo</a>
+        </li>
+
+    </ul>
+    <br>
+
+    <!-- breacrumb -->
+    <div class="container" id="breadcrumb">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+            </ol>
+        </nav>
+
+    </div>
+
+    <!-- home-page -->
+    <div class="container" id="home-page">
+        <div>
+            <div class="jumbotron" id="jumbotron-container">
+                <h1 class="display-3">Welcome to ToKompi</h1>
+                <p class="lead">Toko online elektronik, gadget, komputer terpercaya</p>
+                <hr class="my-4">
+
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" role="button" onclick="signin()" id="loginJumbotron">LOGIN</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- product-page -->
+    <div class="container" id="product-page" style="display: none">
+        <div class="row">
+            <div class="col-12 col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i>
+                        Categories</div>
+                    <ul class="list-group category_block" id="categoryList-container">
+                        <li class="list-group-item"><a href="category.html">Cras justo odio</a></li>
+
+                    </ul>
+                </div>
+                <div class="card bg-light mb-3">
+                    <div class="card-header bg-success text-white text-uppercase">Last product</div>
+                    <div class="card-body">
+                        <img class="img-fluid" src="https://dummyimage.com/600x400/55595c/fff" />
+                        <h5 class="card-title">Product title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <p class="bloc_left_price">99.00 $</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row" id="productList-container">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">Product title</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="btn btn-danger btn-block">99.00 $</p>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#" class="btn btn-success btn-block">Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- cart -->
+    <div class="container" id="checkout-page" style="display: none">
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                </h4>
+                <ul class="list-group mb-3" id="checkout-cart-container">
+                    <!-- LIST CART -->
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Product name</h6>
+                            <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$12</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">Promo code</h6>
+                            <small>EXAMPLECODE</small>
+                        </div>
+                        <span class="text-success">-$5</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (USD)</span>
+                        <strong>$20</strong>
+                    </li>
+                </ul>
+
+                <form class="card p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Promo code">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8 order-md-1" id="billing-address-container">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="register-page" style="display: none; margin-bottom: 20vh ">
+        <form id="register-form">
+            <div class="form-group">
+                <label for="exampleInputName1">Name</label>
+                <input id="name-register-form" type="text" class="form-control" id="exampleInputName1" aria-describedby=""
+                    placeholder="Enter email">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input id="email-register-form" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input id="password-register-form" type="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputKota1">Kota</label>
+                <input id="kota-register-form" type="text" class="form-control" id="exampleInputKota1" aria-describedby=""
+                    placeholder="Enter Kota">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputAlamat1">Alamat</label>
+                <input id="alamat-register-form" type="text" class="form-control" id="exampleInputAlamat1"
+                    aria-describedby="" placeholder="Enter Alamat">
+
+            </div>
+
+            <button type="submit" class="btn btn-primary" onclick="">Submit</button>
+        </form>
+    </div>
+
+
+
+    <div class="container" id="signin-page" style="display: none;">
+
+        <div class="col">
+
+            <section id="loginform" class="outer-wrapper">
+
+                <div class="inner-wrapper">
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <h2 class="text-center">Welcome back.</h2>
+                                <form role="form" id="captcha">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input id="email-login" type="email" class="form-control" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input id="password-login" type="password" class="form-control" placeholder="Password">
+                                    </div>
+
+                                    <div class="g-recaptcha" data-sitekey="6Ley2IgUAAAAALw3GCIV_pVmafmI_vegJGNCg6iI"></div>
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                    <br><br>
+                                    <div class="form-group">
+                                        <label>
+                                            <label>Dont have account? </label>
+                                            <a href="#" onclick="register()">register</a>
+                                        </label>
+
+                                    </div>
+                                    <label>or signin with..</label>
+                                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+        <!-- 
+FOOTER -->
+        <div class="card text-center" id="footer">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Active</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body" style="clear: both;
+        position: relative;
+        height: 40px;
+        margin-top: -40px;">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script>
+            var productList = []
+            var categoryList = []
+            var userData = undefined
+            var totalCheckoutPrice = 0
+            var cartCount = undefined
+            var baseUrl = "http://localhost:3000"
+            displayCategory()
+            checkHome()
+            getCartData()
+
+            $('#captcha').submit(function (event) {
+                event.preventDefault()
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/login',
+                    data: {
+                        email: $('#email-login').val(),
+                        password: $('#password-login').val(),
+                        captcha: $('#g-recaptcha-response').val()
+                    }
+                })
+                    .done(response => {
+
+                        localStorage.JWT_TOKEN = response.token
+                        localStorage.userId = response.userData._id
+
+                        signin()
+                        getCartData()
+                        console.log(response)
+                        $("#navbar2-container").show();
+                        $("#cartBtn").show();
+                        $("#singOut").show();
+                        $("#signin-page").hide();
+                        
+
+                    })
+                    .fail(err => {
+                        checkHome()
+                        console.log(err)
+                    })
+            })
+            function checkHome() {
+                if (localStorage.JWT_TOKEN == undefined) {
+                    $("#navbar2-container").hide();
+                    $("#cartBtn").hide();
+                    $("#singOut").hide();
+
+                }
+            }
+            console.log(localStorage.userId);
+
+
+            function getCartData() {
+                $.ajax({
+                    type: "GET",
+                    url: `${baseUrl}/cart/${localStorage.userId}`,
+
+                    success: function (response) {
+                        console.log(response.items);
+
+                        $("#cartCount").html(`${response.items.length}`);
+                        userData = response
+                    },
+                    fail: function (response) {
+                        console.log(response);
+
+                    }
+                });
+
+            }
+
+            function displayCategory() {
+                $.ajax({
+                    type: "GET",
+                    url: `${baseUrl}/item`,
+                    success: function (val) {
+                        var categoryListTemp = []
+                        productList = val.items
+                        productList.forEach(element => {
+                            element.category != undefined && categoryListTemp.push(element.category)
+                        });
+
+                        $(".dropdown-menu").html("");
+                        categoryList = categoryListTemp.filter(function (item, pos) {
+                            console.log(item);
+
+                            $(".dropdown-menu").append(`
+                        <a class="dropdown-item" href="#" onclick="displayOneCategory("${item}")">${item}</a>
+                    `)
+                            return categoryListTemp.indexOf(item) == pos;
+                        })
+
+                    },
+                    error: function (val) {
+                        console.log(val);
+
+                    }
+                })
+            }
+
+            function productsPage() {
+
+                $("#home-page").hide();
+                $("#checkout-page").hide();
+                $("#product-page").show();
+
+                $("#productList-container").html("");
+                $("#categoryList-container").html("");
+                categoryList.forEach((value, pos) => {
+                    $("#categoryList-container").append(`
+                <li class="list-group-item"><a href="#" onclick="displayOneCategory('${value}')">${value}</a></li>
+                `);
+                })
+
+                for (let i = 0; i < productList.length; i++) {
+
+                    $("#productList-container").append(`
+                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="${productList[i].imageUrl ? productList[i].imageUrl : "http://www.ourlincolnpark.com/new/wp-content/themes/456ecology/assets//img/no-product-image.png"}" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">${productList[i].name}</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col" id="priceTagBtn${i}">
+                                        <p class="btn btn-danger btn-block">Rp. ${productList[i].price}</p>
+                                        </div>
+                                        <div class="col" id="addToCartBtn${i}">
+                                            <a href="#" class="btn btn-success btn-block" onclick="addToCart('${productList[i]._id}', ${i})">Add to cart</a>
+                                            </div>
+                                            <div class="col" style="display: none" id="successCartBtn${i}">
+                                                <a id="successCartInfo"href="#" class="btn btn-info btn-block" >Added to cart!</a>
+                                                </div>
+                                                
+                                                
+                                                <div class="col" style="display: none;" id="progress${i}">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                                        </div>
+                                                        </div>
+
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        `);
+
+                    $(`#addToCartBtn${i}`).click(function (e) {
+                        e.preventDefault();
+
+                    });
+                }
+            }
+
+            function register() {
+                $("#signin-page").hide();
+                $("#register-page").show();
+                $("#register-form").submit(function (e) {
+                    $.ajax({
+                        type: "POST",
+                        url: `${baseUrl}/users`,
+                        data: {
+                            name: $("#name-register-form").val(),
+                            email: $("#email-register-form").val(),
+                            password: $("#password-register-form").val(),
+                            kota: $("#kota-register-form").val(),
+
+                        },
+                        success: function (response) {
+                            console.log(response);
+
+
+                        }
+                    });
+
+                });
+
+            }
+
+            function signin() {
+                $("#home-page").hide();
+                $("#signin-page").show();
+                $("#footer").hide();
+            }
+
+            function successSignIn() {
+                $("#navbar2-container").show();
+                $("#cartBtn").show();
+                $("#signin-page").hide();
+                $("#singOut").show();
+                // $(".jumbotron").show();
+                $("#loginJumbotron").hide();
+
+            }
+            function signOut() {
+                $("#navbar2-container").hide();
+                $("#cartBtn").hide();
+                $("#singOut").hide();
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    localStorage.clear()
+                    console.log(localStorage);
+                    
+                });
+            }
+
+            function addToCart(itemId, elemIndex) {
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+
+                        // Upload progress
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+
+                            }
+                        }, false);
+
+                        // Download progress
+                        xhr.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+
+                                $(`#priceTagBtn${elemIndex}`).hide();
+                                $(`#addToCartBtn${elemIndex}`).hide();
+                                $(`#progress${elemIndex}`).show()
+
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
+                    type: "POST",
+                    url: `${baseUrl}/cart/${itemId}`,
+                    data: {
+                        userId: localStorage.userId
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        $(`#successCartBtn${elemIndex}`).show();
+                        setTimeout(() => {
+                            $(`#successCartBtn${elemIndex}`).hide();
+                            $(`#priceTagBtn${elemIndex}`).show();
+                            $(`#addToCartBtn${elemIndex}`).show();
+                        }, 1000);
+                        $(`#progress${elemIndex}`).hide()
+                        getCartData()
+
+                    }
+                });
+            }
+
+            function displayOneCategory(category) {
+                $("#productList-container").html("")
+
+                for (let i = 0; i < productList.length; i++) {
+                    if (productList[i].category == category) {
+
+                        $("#productList-container").append(`
+                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="${productList[i].imageUrl ? productList[i].imageUrl : "http://www.ourlincolnpark.com/new/wp-content/themes/456ecology/assets//img/no-product-image.png"}" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="product.html" title="View Product">${productList[i].name}</a></h4>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <div class="row">
+                                    <div class="col" id="priceTagBtn${i}">
+                                        <p class="btn btn-danger btn-block">Rp. ${productList[i].price}</p>
+                                        </div>
+                                        <div class="col" id="addToCartBtn${i}">
+                                            <a href="#" class="btn btn-success btn-block" onclick="addToCart('${productList[i]._id}', ${i})">Add to cart</a>
+                                            </div>
+                                            <div class="col" style="display: none" id="successCartBtn${i}">
+                                                <a id="successCartInfo"href="#" class="btn btn-info btn-block" >Added to cart!</a>
+                                                </div>
+                                                
+                                
+                                <div class="col" style="display: none;" id="progress${i}">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                        </div>
+                                        </div>
+
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        `);
+
+                        $(`#addToCartBtn${i}`).click(function (e) {
+                            e.preventDefault();
+
+                        });
+                    }
+                }
+
+                console.log(productList[0]);
+
+            }
+
+            function checkout() {
+                console.log(userData, `itemss`);
+
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/transaction`,
+                    data: {
+                        id: localStorage.userId,
+                        items: JSON.stringify(userData.items),
+                        kota: "Yogyakarta",
+                        totalPrice: function () {
+                            let total = 0
+                            userData.items.forEach(element => {
+                                total += Number(element.price)
+                            });
+                            return total
+                        }
+                    },
+                    success: function (response) {
+                        console.log(response, "hehe");
+
+                        if (response) {
+                            userData.items = []
+                            getCartData()
+                        }
+
+                    }
+                });
+            }
+
+            function displayCheckoutPage() {
+                var rate = 0
+                $("#home-page").hide();
+                $("#product-page").hide();
+                $("#checkout-page").show();
+                $("#checkout-cart-container").html("");
+                $.ajax({
+                    type: "GET",
+                    url: "http://apilayer.net/api/live?access_key=e3bd31f9fd3c93064da59bbeb7da0b30",
+                    success: function (response) {
+                        console.log(response.quotes.USDIDR);
+                        rate = response.quotes.USDIDR
+                        userData.items.forEach((data) => {
+                            console.log(Number(data.price)/Number(rate));
+                            console.log(data.price);
+                            console.log(rate);
+                            
+                            
+                    $("#checkout-cart-container").append(`
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">${data.name}</h6>
+                                <small class="text-muted">${data.category}</small>
+                            </div>
+                            <span class="text-muted">$ ${Number(data.price)/Number(rate)}</span>
+                        </li>
+                `);
+                    totalCheckoutPrice += Number(data.price)
+                })
+
+                $("#checkout-cart-container").append(`
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Total Price</h6>
+                <small>in USD</small>
+              </div>
+              <span class="text-success"> $ ${Number(totalCheckoutPrice)/Number(rate)}</span>
+            </li>
+            `);
+                    }
+                });
+               
+                $("#billing-address-container").html("");
+                $("#billing-address-container").append(`
+            <h4 class="mb-3">Billing address</h4>
+                <form class="needs-validation" novalidate="">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">First name</label>
+                            <input value="${userData.name}"type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                        <input value="${userData.email}" type="email" class="form-control" id="email" placeholder="you@mail.com">
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input value="${userData.kota}"type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state">Kota</label>
+                            <select class="custom-select d-block w-100" id="kota" required="">
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Harap pilih kota
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    
+                    <hr class="mb-4">
+
+                   
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout()">Continue to checkout</button>
+                </form>
+                <br>
+                <br>
+            `);
+
+
+                console.log(userData);
+
+            }
+
+
+        </script>
+
+        <script>
+
+            // window.fbAsyncInit = function () {
+            //     FB.init({
+            //         appId: '275123579836202',
+            //         cookie: true,
+            //         xfbml: true,
+            //         version: 'v3.2'
+            //     });
+            // };
+
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log(profile);
+
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                var id_token = googleUser.getAuthResponse().id_token;
+                console.log(id_token)
+
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/googleOauth',
+                    data: {
+                        token: id_token
+                    }
+                })
+                    .done(response => {
+                        localStorage.JWT_TOKEN = response.token
+                        localStorage.userId = response.user._id
+                        successSignIn()
+                        getCartData()
+                        console.log(response)
+                    })
+                    .fail(err => {
+                        console.log(err)
+                    })
+            }
+
+            function checkLoginState() {
+                console.log('masuk cek login fb')
+                FB.getLoginStatus(function (response) {
+                    $.ajax({
+                        method: 'post',
+                        url: 'http://localhost:3000/fbOauth',
+                        headers: {
+                            token_fb: response.authResponse.accessToken
+                        }
+                    })
+                        .done((data) => {
+                            console.log(data)
+                            // localStorage.setItem('token', data.token);
+                            // localStorage.setItem('user', data.user);
+                            // window.location.replace("dashboard.html");
+                        })
+                        .fail(err => {
+                            console.log(err)
+                        })
+                });
+            }</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>

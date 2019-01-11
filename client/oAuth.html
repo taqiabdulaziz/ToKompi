@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="460853791285-cv4u1att6v58hakiqldgnmh6ic8acd0q.apps.googleusercontent.com">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <title>Document</title>
+    <script>
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+<body>
+    <form action="" id="captcha">
+        <input type="text" id="email" placeholder="email"><br>
+        <input type="text" id="password" placeholder="password"><br>
+        <div class="g-recaptcha" data-sitekey="6Ley2IgUAAAAALw3GCIV_pVmafmI_vegJGNCg6iI"></div>
+        <button>Submit</button>
+    </form>
+<br>
+<br>
+<br>
+
+    <fb:login-button 
+        scope="public_profile,email"
+        onlogin="checkLoginState()">
+    </fb:login-button>
+
+    <h1>TAQI</h1>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <button id="singOut" onclick="signOut();">Sign Out</button>
+    
+    <script type="text/javascript">
+        // var onloadCallback = function() {
+        //   alert("grecaptcha is ready!");
+        // };
+    </script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log(id_token)
+
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/googleOauth',
+                data: {
+                    token: id_token
+                }
+            })
+                .done(response => {
+                    console.log(response)
+                })
+                .fail(err => {
+                    console.log(err)
+                })
+        }
+        
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            });
+        }
+
+        function tes() {
+            alert('asd')
+        }
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '275123579836202',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v3.2'
+            });
+        };
+        
+        function checkLoginState() {
+            console.log('masuk cek login fb')
+            FB.getLoginStatus(function(response) {
+            $.ajax({
+                method: 'post',
+                url: 'http://localhost:3000/fbOauth',
+                headers: {
+                    token_fb: response.authResponse.accessToken
+                }
+            })
+                .done((data) => {
+                    console.log(data)
+                // localStorage.setItem('token', data.token);
+                // localStorage.setItem('user', data.user);
+                // window.location.replace("dashboard.html");
+                })
+                .fail(err => {
+                    console.log(err)        
+                })
+            });
+      }
+    </script>
+    <script>
+        $('#captcha').submit(function(event) {
+            event.preventDefault()
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/login',
+                data: {
+                    email : $('#email').val(),
+                    password : $('#password').val(),
+                    captcha : $('#g-recaptcha-response').val()
+                }
+            })
+                .done(response => {
+                    console.log(response)
+                })
+                .fail(err => {
+                    console.log(err)
+                })
+        })
+    </script>
+</body>
+</html>
+
