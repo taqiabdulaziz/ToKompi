@@ -124,7 +124,8 @@ module.exports = {
                                 name: user.name,
                                 role: user.role,
                                 items: user.items
-                            }, process.env.JWT_SECRET)
+                            }, process.env.JWT_SECRET),
+                            user: user
                         })
                     } else {
                         let newUser = {
@@ -141,7 +142,8 @@ module.exports = {
                                         name: user.name,
                                         role: user.role,
                                         items: user.items
-                                    }, process.env.JWT_SECRET)
+                                    }, process.env.JWT_SECRET),
+                                    user: user
                                 })
                             })
                             .catch(err => {
