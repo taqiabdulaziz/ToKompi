@@ -638,18 +638,30 @@ FOOTER -->
             }
 
             function displayCheckoutPage() {
+                var rate = 0
                 $("#home-page").hide();
                 $("#product-page").hide();
                 $("#checkout-page").show();
                 $("#checkout-cart-container").html("");
-                userData.items.forEach((data) => {
+                $.ajax({
+                    type: "GET",
+                    url: "http://apilayer.net/api/live?access_key=e3bd31f9fd3c93064da59bbeb7da0b30",
+                    success: function (response) {
+                        console.log(response.quotes.USDIDR);
+                        rate = response.quotes.USDIDR
+                        userData.items.forEach((data) => {
+                            console.log(Number(data.price)/Number(rate));
+                            console.log(data.price);
+                            console.log(rate);
+                            
+                            
                     $("#checkout-cart-container").append(`
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
                                 <h6 class="my-0">${data.name}</h6>
                                 <small class="text-muted">${data.category}</small>
                             </div>
-                            <span class="text-muted">${data.price}</span>
+                            <span class="text-muted">$ ${Number(data.price)/Number(rate)}</span>
                         </li>
                 `);
                     totalCheckoutPrice += Number(data.price)
@@ -659,11 +671,14 @@ FOOTER -->
             <li class="list-group-item d-flex justify-content-between bg-light">
               <div class="text-success">
                 <h6 class="my-0">Total Price</h6>
-                <small>in IDR</small>
+                <small>in USD</small>
               </div>
-              <span class="text-success">${totalCheckoutPrice}</span>
+              <span class="text-success"> $ ${Number(totalCheckoutPrice)/Number(rate)}</span>
             </li>
             `);
+                    }
+                });
+               
                 $("#billing-address-container").html("");
                 $("#billing-address-container").append(`
             <h4 class="mb-3">Billing address</h4>
