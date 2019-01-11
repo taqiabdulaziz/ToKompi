@@ -17,49 +17,45 @@ class TransactionController {
       .findOne({ city_name: req.body.kota })
       .then(city => {
         destinationId = city.city_id
-      })
-      .catch(err => {
-        console.log("error", err)
-      })
 
-    axios
-      .post(
-        `https://api.rajaongkir.com/starter/cost`,
-        {
-          "origin": '501',
-          "destination": '114',
-          "weight": 1700,
-          "courier": 'jne'
-        },
-        { "headers": { "key": RajaOngkirClient_id } }
-      )
-      .then(response => {
-        findShippingCost = response.data.rajaongkir.results[0].costs[0].cost[0].value
-        console.log(findShippingCost)
+        axios
+          .post(
+            `https://api.rajaongkir.com/starter/cost`,
+            {
+              "origin": '152',
+              "destination": destinationId,
+              "weight": 1700,
+              "courier": 'jne'
+            },
+            { "headers": { "key": RajaOngkirClient_id } }
+          )
+          .then(response => {
+            findShippingCost = response.data.rajaongkir.results[0].costs[0].cost[0].value
+            console.log(findShippingCost)
 
-        Transaction
-          .create({
-            userId: ObjectId(req.body.id),
-            shippingCost: findShippingCost,
-            items: req.body.items,
-            itemCost: req.body.itemCost,
-            totalPrice: req.body.totalPrice
-          })
-          .then(transaction => {
-            res
-              .status(200)
-              .json({
-                msg: "create success",
-                transaction
+            Transaction
+              .create({
+                userId: ObjectId(req.body.id),
+                shippingCost: findShippingCost
+              })
+              .then(transaction => {
+                res
+                  .status(200)
+                  .json({
+                    msg: "create success",
+                    transaction
+                  })
               })
           })
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({
-            msg: "internal server error",
-            err
+          .catch(err => {
+            console.log("error", err)
+
+            res
+              .status(500)
+              .json({
+                msg: "internal server error",
+                err
+              })
           })
       })
   }
