@@ -69,6 +69,8 @@ https://api.rajaongkir.com/
 
 Google-Captcha: https://www.google.com/recaptcha
 
+https://currencylayer.com/ (CURRENCY CONVERTER)
+
 
 ```
 
