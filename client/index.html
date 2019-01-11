@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./asset/bootstrap.css">
     <meta name="google-signin-client_id" content="460853791285-cv4u1att6v58hakiqldgnmh6ic8acd0q.apps.googleusercontent.com">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script>
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -199,31 +200,35 @@
         <form id="register-form">
             <div class="form-group">
                 <label for="exampleInputName1">Name</label>
-                <input id="name-register-form" type="text" class="form-control" id="exampleInputName1" aria-describedby="" placeholder="Enter email">
+                <input id="name-register-form" type="text" class="form-control" id="exampleInputName1" aria-describedby=""
+                    placeholder="Enter email">
 
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input id="email-register-form" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Enter email">
+                <input id="email-register-form" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter email">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input id="password-register-form" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <input id="password-register-form" type="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password">
             </div>
             <div class="form-group">
                 <label for="exampleInputKota1">Kota</label>
-                <input id="kota-register-form" type="text" class="form-control" id="exampleInputKota1" aria-describedby="" placeholder="Enter Kota">
+                <input id="kota-register-form" type="text" class="form-control" id="exampleInputKota1" aria-describedby=""
+                    placeholder="Enter Kota">
 
             </div>
             <div class="form-group">
                 <label for="exampleInputAlamat1">Alamat</label>
-                <input id="alamat-register-form" type="text" class="form-control" id="exampleInputAlamat1" aria-describedby="" placeholder="Enter Alamat">
+                <input id="alamat-register-form" type="text" class="form-control" id="exampleInputAlamat1"
+                    aria-describedby="" placeholder="Enter Alamat">
 
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="">Submit</button>
         </form>
     </div>
 
@@ -241,15 +246,19 @@
 
                             <div class="col-sm-4 col-sm-offset-4">
                                 <h2 class="text-center">Welcome back.</h2>
-                                <form role="form">
+                                <form role="form" id="captcha">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" placeholder="Enter email">
+                                        <input id="email-login" type="email" class="form-control" placeholder="Enter email">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" class="form-control" placeholder="Password">
+                                        <input id="password-login" type="password" class="form-control" placeholder="Password">
                                     </div>
+
+                                    <div class="g-recaptcha" data-sitekey="6Ley2IgUAAAAALw3GCIV_pVmafmI_vegJGNCg6iI"></div>
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                    <br><br>
                                     <div class="form-group">
                                         <label>
                                             <label>Dont have account? </label>
@@ -257,9 +266,6 @@
                                         </label>
 
                                     </div>
-
-                                    <button type="submit" class="btn btn-default">Submit</button>
-                                    <br><br>
                                     <label>or signin with..</label>
                                     <div class="g-signin2" data-onsuccess="onSignIn"></div>
                                 </form>
@@ -305,14 +311,50 @@ FOOTER -->
             var cartCount = undefined
             var baseUrl = "http://localhost:3000"
             displayCategory()
+            checkHome()
             getCartData()
 
-            if (localStorage.JWT_TOKEN == undefined) {
-                $("#navbar2-container").hide();
-                $("#cartBtn").hide();
-                $("singOut").hide();
+            $('#captcha').submit(function (event) {
+                event.preventDefault()
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/login',
+                    data: {
+                        email: $('#email-login').val(),
+                        password: $('#password-login').val(),
+                        captcha: $('#g-recaptcha-response').val()
+                    }
+                })
+                    .done(response => {
 
+                        localStorage.JWT_TOKEN = response.token
+                        localStorage.userId = response.userData._id
+
+                        signin()
+                        getCartData()
+                        console.log(response)
+                        $("#navbar2-container").show();
+                        $("#cartBtn").show();
+                        $("#singOut").show();
+                        $("#signin-page").hide();
+                        
+
+                    })
+                    .fail(err => {
+                        checkHome()
+                        console.log(err)
+                    })
+            })
+            function checkHome() {
+                if (localStorage.JWT_TOKEN == undefined) {
+                    $("#navbar2-container").hide();
+                    $("#cartBtn").hide();
+                    $("#singOut").hide();
+
+                }
             }
+            console.log(localStorage.userId);
+
 
             function getCartData() {
                 $.ajax({
@@ -320,6 +362,8 @@ FOOTER -->
                     url: `${baseUrl}/cart/${localStorage.userId}`,
 
                     success: function (response) {
+                        console.log(response.items);
+
                         $("#cartCount").html(`${response.items.length}`);
                         userData = response
                     },
@@ -413,25 +457,29 @@ FOOTER -->
 
                     });
                 }
-
             }
 
             function register() {
                 $("#signin-page").hide();
                 $("#register-page").show();
-                $("#register-form").submit(function (e) { 
+                $("#register-form").submit(function (e) {
                     $.ajax({
                         type: "POST",
-                        url: `${baseUrl}/transaction`,
+                        url: `${baseUrl}/users`,
                         data: {
-                            id: localStorage.userId,
-                            
+                            name: $("#name-register-form").val(),
+                            email: $("#email-register-form").val(),
+                            password: $("#password-register-form").val(),
+                            kota: $("#kota-register-form").val(),
+
                         },
                         success: function (response) {
-                            
+                            console.log(response);
+
+
                         }
                     });
-                    
+
                 });
 
             }
@@ -458,6 +506,8 @@ FOOTER -->
                 var auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function () {
                     localStorage.clear()
+                    console.log(localStorage);
+                    
                 });
             }
 
@@ -557,6 +607,36 @@ FOOTER -->
 
             }
 
+            function checkout() {
+                console.log(userData, `itemss`);
+
+                $.ajax({
+                    type: "POST",
+                    url: `${baseUrl}/transaction`,
+                    data: {
+                        id: localStorage.userId,
+                        items: JSON.stringify(userData.items),
+                        kota: "Yogyakarta",
+                        totalPrice: function () {
+                            let total = 0
+                            userData.items.forEach(element => {
+                                total += Number(element.price)
+                            });
+                            return total
+                        }
+                    },
+                    success: function (response) {
+                        console.log(response, "hehe");
+
+                        if (response) {
+                            userData.items = []
+                            getCartData()
+                        }
+
+                    }
+                });
+            }
+
             function displayCheckoutPage() {
                 $("#home-page").hide();
                 $("#product-page").hide();
@@ -639,56 +719,7 @@ FOOTER -->
                     
                     <hr class="mb-4">
 
-                    <h4 class="mb-3">Payment</h4>
-
-                    <div class="d-block my-3">
-                        <div class="custom-control custom-radio">
-                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked=""
-                                required="">
-                            <label class="custom-control-label" for="credit">Credit card</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                            <label class="custom-control-label" for="debit">Debit card</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                            <label class="custom-control-label" for="paypal">Paypal</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="cc-name">Name on card</label>
-                            <input type="text" class="form-control" id="cc-name" placeholder="" required="">
-                            <small class="text-muted">Full name as displayed on card</small>
-                            <div class="invalid-feedback">
-                                Name on card is required
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="cc-number">Credit card number</label>
-                            <input type="text" class="form-control" id="cc-number" placeholder="" required="">
-                            <div class="invalid-feedback">
-                                Credit card number is required
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label for="cc-expiration">Expiration</label>
-                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
-                            <div class="invalid-feedback">
-                                Expiration date required
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="cc-expiration">CVV</label>
-                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
-                            <div class="invalid-feedback">
-                                Security code required
-                            </div>
-                        </div>
-                    </div>
+                   
                     <hr class="mb-4">
                     <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout()">Continue to checkout</button>
                 </form>
@@ -696,11 +727,12 @@ FOOTER -->
                 <br>
             `);
 
+
                 console.log(userData);
 
             }
 
-            
+
         </script>
 
         <script>
@@ -736,6 +768,7 @@ FOOTER -->
                         localStorage.JWT_TOKEN = response.token
                         localStorage.userId = response.user._id
                         successSignIn()
+                        getCartData()
                         console.log(response)
                     })
                     .fail(err => {
@@ -743,7 +776,6 @@ FOOTER -->
                     })
             }
 
-<<<<<<< HEAD
             function checkLoginState() {
                 console.log('masuk cek login fb')
                 FB.getLoginStatus(function (response) {
@@ -769,13 +801,6 @@ FOOTER -->
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-=======
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
->>>>>>> 29f0d7b74541dcb8f93c18901231911b8cff46a0
 </body>
 
 </html>

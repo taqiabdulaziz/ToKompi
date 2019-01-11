@@ -10,9 +10,12 @@ module.exports = {
         let userData = { name, email, password, kota } = req.body
         User.create(userData)
             .then(user => {
+                console.log("user barhasil create", user);
                 res.status(201).json(user)
             })
             .catch(err => {
+                console.log(err);
+                
                 res.status(500).json(err)
             })
     },
@@ -80,7 +83,8 @@ module.exports = {
                                                 id: user.id,
                                                 role: user.role,
                                                 email: user.email,
-                                            }, process.env.JWT_SECRET)
+                                            }, process.env.JWT_SECRET),
+                                            userData: user
                                         })
                                     } else {
                                         res.status(400).json({
