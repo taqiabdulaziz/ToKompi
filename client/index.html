@@ -421,8 +421,11 @@ FOOTER -->
                 $("#register-form").submit(function (e) { 
                     $.ajax({
                         type: "POST",
-                        url: `${baseUrl}`,
-                        data: {},
+                        url: `${baseUrl}/transaction`,
+                        data: {
+                            id: localStorage.userId,
+                            
+                        },
                         success: function (response) {
                             
                         }
