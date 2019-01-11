@@ -38,11 +38,13 @@ class TransactionController {
           .then(response => {
             findShippingCost = response.data.rajaongkir.results[0].costs[0].cost[0].value
             console.log(findShippingCost)
+
             console.log(req.body.items);
 
             Transaction
               .create({
                 userId: ObjectId(req.body.id),
+
                 items: JSON.parse(req.body.items),
                 shippingCost: findShippingCost,
                 totalPrice: req.body.totalPrice
@@ -61,6 +63,12 @@ class TransactionController {
                   console.log(`err`, err);
 
                 });
+
+                shippingCost: findShippingCost,
+                items: req.body.items
+              })
+              .then(transaction => {
+
                 res
                   .status(200)
                   .json({
