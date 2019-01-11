@@ -16,8 +16,19 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
+    <form action="" id="captcha">
+        <input type="text" id="email" placeholder="email"><br>
+        <input type="text" id="password" placeholder="password"><br>
+        <div class="g-recaptcha" data-sitekey="6Ley2IgUAAAAALw3GCIV_pVmafmI_vegJGNCg6iI"></div>
+        <button>Submit</button>
+    </form>
+<br>
+<br>
+<br>
+
     <fb:login-button 
         scope="public_profile,email"
         onlogin="checkLoginState()">
@@ -27,7 +38,11 @@
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <button id="singOut" onclick="signOut();">Sign Out</button>
     
-    
+    <script type="text/javascript">
+        // var onloadCallback = function() {
+        //   alert("grecaptcha is ready!");
+        // };
+    </script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script>
         function onSignIn(googleUser) {
@@ -95,38 +110,25 @@
             });
       }
     </script>
-
     <script>
-    //     window.fbAsyncInit = function() {
-    //         FB.init({
-    //             appId      : '275123579836202',
-    //             cookie     : true,
-    //             xfbml      : true,
-    //             version    : 'v3.2'
-    //         });
-    //     };
-
-    //     function checkLoginState() {
-    //         console.log('masuk cek login fb')
-    //         FB.getLoginStatus(function(response) {
-    //         $.ajax({
-    //             method: 'post',
-    //             url: 'http://localhost:3000/fbOauth',
-    //             // headers: {
-    //             //     token_fb: response.authResponse.accessToken
-    //             // }
-    //         })
-    //             .done((data) => {
-    //                 console.log(err)
-    //             // localStorage.setItem('token', data.token);
-    //             // localStorage.setItem('user', data.user);
-    //             // window.location.replace("dashboard.html");
-    //             })
-    //             .fail(err => {
-    //                 console.log(err)        
-    //             })
-    //         });
-    //   }
+        $('#captcha').submit(function(event) {
+            event.preventDefault()
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/login',
+                data: {
+                    email : $('#email').val(),
+                    password : $('#password').val(),
+                    captcha : $('#g-recaptcha-response').val()
+                }
+            })
+                .done(response => {
+                    console.log(response)
+                })
+                .fail(err => {
+                    console.log(err)
+                })
+        })
     </script>
 </body>
 </html>
