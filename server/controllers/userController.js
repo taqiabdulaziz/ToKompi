@@ -36,7 +36,7 @@ module.exports = {
             })
     },
     updateUser: function(req, res) {
-        let userData = { name, email, password, kota } = req.body
+        let userData = { name, email, password, kota, items } = req.body
         for(let key in userData) {
             if(!userData[key]) delete userData[key]
         }
