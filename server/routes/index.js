@@ -12,4 +12,5 @@ router.post('/login', userController.loginUser)
 router.post('/googleOauth', userController.googleOauth)
 router.post('/fbOauth', userController.fbOauth)
 
+
 module.exports = router;
