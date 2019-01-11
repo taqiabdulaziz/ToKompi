@@ -30,33 +30,67 @@ class ItemController {
 
   static getAll(req, res, next) {
     let query = {}
-
-    if (req.query) {
+    let querySize = 0
+    for (const key in req.query) {
+      querySize
+    }
+    
+    if (querySize > 0) {
       query = {
         name: {
           $regex: '.*' + req.query.name + '.*',
           $options: 'i'
         }
       }
-    }
-    Item
+
+      Item
       .find(query)
-      .then(items => {
+      .then((items) => {
         res
           .status(200)
           .json({
             msg: "fetch success",
             items
           })
+        console.log(items);
+        
       })
-      .catch(err => {
+      .catch((err) => {
         res
           .status(400)
           .json({
             msg: "data not found",
             err
           })
+        console.log(err);
+        
       })
+    } else {
+      Item
+      .find()
+      .then((items) => {
+        res
+          .status(200)
+          .json({
+            msg: "fetch success",
+            items
+          })
+        console.log(items);
+        
+      })
+      .catch((err) => {
+        res
+          .status(400)
+          .json({
+            msg: "data not found",
+            err
+          })
+        console.log(err);
+        
+      })
+    }
+    
+   
   }
 
   static getOne(req, res, next) {
