@@ -1,6 +1,8 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const compare = require('../helpers/hashPw')
+const {OAuth2Client} = require('google-auth-library')
+const axios = require('axios')
 require('dotenv').config()
 
 module.exports = {
@@ -78,6 +80,104 @@ module.exports = {
                     })
                 }
             }) 
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    },
+    googleOauth: function(req, res) {
+        const clientId = '460853791285-cv4u1att6v58hakiqldgnmh6ic8acd0q.apps.googleusercontent.com'
+        const client = new OAuth2Client(clientId);
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: req.body.token,
+                audience: clientId,  
+            });
+            const payload = ticket.getPayload();
+            const userid = payload['sub'];
+            User.findOne({email: payload.email})
+                .then(user => {
+                    if(user) {
+                        res.status(200).json({
+                            token: jwt.sign({
+                                email: user.email,
+                                name: user.name,
+                                role: user.role,
+                                items: user.items
+                            }, process.env.JWT_SECRET)
+                        })
+                    } else {
+                        let newUser = {
+                            name : payload.name,
+                            email: payload.email,
+                            password: process.env.GOOGLE_OAUTH_PASS,
+                            role: 'customer'
+                        }
+                        User.create(newUser)
+                            .then(user => {
+                                res.status(201).json({
+                                    token: jwt.sign({
+                                        email: user.email,
+                                        name: user.name,
+                                        role: user.role,
+                                        items: user.items
+                                    }, process.env.JWT_SECRET)
+                                })
+                            })
+                            .catch(err => {
+                                res.status(500).json(err)
+                            })
+                    }
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+          }
+          verify().catch(console.error);
+    },
+    fbOauth: function(req, res) {
+        axios({
+            method: 'GET',
+            url: `https://graph.facebook.com/me?fields=id,name,email&access_token=${req.headers.token_fb}`
+        })
+            .then(fbUser => {
+                User.findOne({email: fbUser.data.email})
+                    .then(user => {
+                        if(user) {
+                            res.status(200).json({
+                                token: jwt.sign({
+                                    email: user.email,
+                                    name: user.name,
+                                    role: user.role,
+                                    items: user.items
+                                }, process.env.JWT_SECRET)
+                            })
+                        } else {
+                            let newUser = {
+                                name : fbUser.data.name,
+                                email: fbUser.data.email,
+                                password: process.env.GOOGLE_OAUTH_PASS,
+                                role: 'customer'
+                            }
+                            User.create(newUser)
+                                .then(user => {
+                                    res.status(201).json({
+                                        token: jwt.sign({
+                                            email: user.email,
+                                            name: user.name,
+                                            role: user.role,
+                                            items: user.items
+                                        }, process.env.JWT_SECRET)
+                                    })
+                                })
+                                .catch(err => {
+                                    res.status(500).json(err)
+                                })
+                        }
+                    })
+                    .catch(err => {
+                        res.status(500).json(err)
+                    })
+            })
             .catch(err => {
                 res.status(500).json(err)
             })
